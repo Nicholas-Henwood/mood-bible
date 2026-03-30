@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Bible App</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%234CAF50'/%3E%3Ctext x='32' y='42' font-size='34' text-anchor='middle' fill='white'%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2f4f4f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mood Bible">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root {
+      --bg-1: #f4efe6;
+      --bg-2: #e7dcc8;
+      --ink: #231f19;
+      --ink-soft: #4f473d;
+      --gold: #9d7b41;
+      --gold-dark: #7d5f2e;
+      --paper: #fdf8ee;
+      --paper-edge: #e5d9bf;
+      --accent: #2f4f4f;
+      --accent-hover: #3e6565;
+      --danger: #8f2f2f;
+      --danger-hover: #a13a3a;
+      --shadow: rgba(35, 31, 25, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Palatino Linotype", "Book Antiqua", Garamond, serif;
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 247, 228, 0.7) 0%, transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(220, 197, 150, 0.35) 0%, transparent 35%),
+        linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app-shell {
+      width: min(960px, 100%);
+      min-height: calc(100vh - 48px);
+      border: 1px solid rgba(125, 95, 46, 0.28);
+      border-radius: 22px;
+      background: rgba(255, 251, 241, 0.82);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 22px 48px var(--shadow);
+      padding: clamp(20px, 3vw, 34px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        135deg,
+        rgba(125, 95, 46, 0.04) 0,
+        rgba(125, 95, 46, 0.04) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+      opacity: 0.5;
+    }
+
+    .top-bar,
+    .mood-section,
+    #verse-screen {
+      position: relative;
+      z-index: 1;
+    }
+
+    .top-bar {
+      text-align: center;
+    }
+
+    .kicker {
+      margin: 0;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 10px 0 0;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(30px, 4.6vw, 44px);
+      font-weight: 700;
+      color: #2f281e;
+    }
+
+    .mood-section {
+      margin-top: clamp(72px, 14vh, 150px);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .mood-card {
+      border: 1px solid rgba(125, 95, 46, 0.34);
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fbf2df 0%, #f3e8ce 100%);
+      color: var(--ink);
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      box-shadow: 0 8px 14px rgba(35, 31, 25, 0.12);
+    }
+
+    .mood-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold-dark);
+      box-shadow: 0 14px 20px rgba(35, 31, 25, 0.16);
+    }
+
+    .emoji {
+      font-size: 30px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .utility-row {
+      margin-top: 22px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #verse-screen {
+      display: none;
+      margin-top: clamp(24px, 5vh, 46px);
+    }
+
+    .verse-box {
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .book-shell {
+      margin: 0 auto;
+      width: min(740px, 100%);
+      min-height: 330px;
+      padding: clamp(20px, 4vw, 34px);
+      background: linear-gradient(120deg, #f9f2e3 0%, #fffaf0 25%, #f8edd8 100%);
+      border: 2px solid var(--paper-edge);
+      border-radius: 12px;
+      box-shadow:
+        inset 0 0 0 1px rgba(141, 112, 71, 0.15),
+        0 18px 26px rgba(35, 31, 25, 0.2);
+      position: relative;
+      overflow: hidden;
+      perspective: 1600px;
+    }
+
+    .book-shell::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: linear-gradient(
+        180deg,
+        rgba(125, 95, 46, 0.15) 0%,
+        rgba(125, 95, 46, 0.34) 50%,
+        rgba(125, 95, 46, 0.15) 100%
+      );
+      transform: translateX(-50%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .page-face {
+      position: relative;
+      background: var(--paper);
+      border-radius: 8px;
+      border: 1px solid rgba(125, 95, 46, 0.22);
+      padding: clamp(20px, 3.5vw, 30px);
+      box-shadow: 0 8px 16px rgba(35, 31, 25, 0.08);
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      text-align: left;
+    }
+
+    .turn-page {
+      position: absolute;
+      inset: clamp(20px, 4vw, 34px);
+      z-index: 5;
+      opacity: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, #fdf8ee 0%, #f3e6cb 100%);
+      border-radius: 8px;
+      border: 1px solid rgba(125, 95, 46, 0.24);
+      padding: clamp(20px, 3.5vw, 30px);
+      box-shadow: 0 10px 18px rgba(35, 31, 25, 0.16);
+      backface-visibility: hidden;
+      transform: rotateY(0deg);
+    }
+
+    .turn-page.turn-next {
+      transform-origin: left center;
+    }
+
+    .turn-page.turn-prev {
+      transform-origin: right center;
+    }
+
+    .turn-page.animate.turn-next {
+      animation: pageTurnNext 760ms cubic-bezier(0.37, 0.06, 0.2, 1) forwards;
+    }
+
+    .turn-page.animate.turn-prev {
+      animation: pageTurnPrev 760ms cubic-bezier(0.37, 0.06, 0.2, 1) forwards;
+    }
+
+    @keyframes pageTurnNext {
+      0% {
+        opacity: 1;
+        transform: rotateY(0deg);
+      }
+      45% {
+        box-shadow: 0 12px 28px rgba(35, 31, 25, 0.22);
+      }
+      100% {
+        opacity: 0;
+        transform: rotateY(-165deg);
+      }
+    }
+
+    @keyframes pageTurnPrev {
+      0% {
+        opacity: 1;
+        transform: rotateY(0deg);
+      }
+      45% {
+        box-shadow: 0 12px 28px rgba(35, 31, 25, 0.22);
+      }
+      100% {
+        opacity: 0;
+        transform: rotateY(165deg);
+      }
+    }
+
+    .verse {
+      margin: 0;
+      font-size: clamp(18px, 2.8vw, 24px);
+      line-height: 1.6;
+      color: #2b251d;
+    }
+
+    .source {
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin-top: 16px;
+      margin-bottom: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .controls {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn, .back-btn, .action-btn {
+      padding: 11px 18px;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+      transition: transform 150ms ease, filter 150ms ease;
+      box-shadow: 0 8px 14px rgba(35, 31, 25, 0.2);
+    }
+
+    .nav-btn:hover, .back-btn:hover, .action-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.03);
+    }
+
+    .nav-btn {
+      background-color: var(--accent);
+    }
+
+    .nav-btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .back-btn {
+      background-color: var(--danger);
+      margin-top: 20px;
+    }
+
+    .back-btn:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .action-btn {
+      background-color: var(--gold);
+      color: #fff9ec;
+    }
+
+    .action-btn:hover {
+      background-color: var(--gold-dark);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 10px;
+      }
+
+      .app-shell {
+        min-height: calc(100vh - 20px);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .mood-section {
+        margin-top: 48px;
+      }
+
+      .book-shell {
+        min-height: 290px;
+      }
+
+      .nav-btn,
+      .back-btn,
+      .action-btn {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mood-card,
+      .nav-btn,
+      .back-btn,
+      .action-btn,
+      .turn-page {
+        transition: none;
+        animation: none;
+      }
+    }
+
+    .app-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(125, 95, 46, 0.18);
+    }
+
+    .app-footer a {
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+    }
+
+    .app-footer a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <div class="top-bar">
+      <p class="kicker">Daily Scripture Companion</p>
+      <h1 id="title">How are you feeling today?</h1>
+    </div>
+
+    <div class="mood-section">
+      <div id="mood-selection" class="buttons"></div>
+      <div id="home-utility-row" class="utility-row">
+        <button id="favorites-home-btn" class="action-btn" onclick="openFavorites()">⭐ Favorites (0)</button>
+      </div>
+    </div>
+
+    <div id="verse-screen">
+      <div class="verse-box">
+        <div class="book-shell">
+          <div id="turn-page" class="turn-page" aria-hidden="true">
+            <p id="turn-verse-text" class="verse"></p>
+            <p id="turn-verse-source" class="source"></p>
+          </div>
+
+          <div class="page-face" id="page-face">
+            <p id="verse-text" class="verse"></p>
+            <p id="verse-source" class="source"></p>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="nav-btn" onclick="prevVerse()">⬅ Previous Page</button>
+          <button class="nav-btn" onclick="nextVerse()">Next Page ➡</button>
+        </div>
+        <div class="controls">
+          <button id="favorite-toggle-btn" class="action-btn" onclick="toggleFavoriteCurrentVerse()">⭐ Save</button>
+          <button class="action-btn" onclick="shareCurrentVerse()">📤 Share</button>
+        </div>
+        <button class="back-btn" onclick="goBack()">⬅ Back</button>
+      </div>
+    </div>
+    <div class="app-footer">
+      <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+  </div>
+
+  <script>
+    const APP_SOURCE = "King James Version (KJV, Public Domain)";
+    const FAVORITES_STORAGE_KEY = "moodBibleFavoritesV1";
+    const DAILY_VERSE_COUNT = 5;
+
+    const moods = {
+      Sad: {
+        emoji: "😢",
+        verses: [
+          { reference: "Psalm 34:18", text: "The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit." },
+          { reference: "Revelation 21:4", text: "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain." },
+          { reference: "Matthew 5:4", text: "Blessed are they that mourn: for they shall be comforted." },
+          { reference: "Psalm 147:3", text: "He healeth the broken in heart, and bindeth up their wounds." },
+          { reference: "2 Corinthians 1:3-4", text: "Blessed be God, even the Father of our Lord Jesus Christ, the Father of mercies, and the God of all comfort; Who comforteth us in all our tribulation." },
+          { reference: "John 14:27", text: "Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you." },
+          { reference: "Lamentations 3:22-23", text: "It is of the LORD'S mercies that we are not consumed, because his compassions fail not. They are new every morning." }
+        ]
+      },
+      Happy: {
+        emoji: "😊",
+        verses: [
+          { reference: "Philippians 4:4", text: "Rejoice in the Lord alway: and again I say, Rejoice." },
+          { reference: "Psalm 118:24", text: "This is the day which the LORD hath made; we will rejoice and be glad in it." },
+          { reference: "John 15:11", text: "These things have I spoken unto you, that my joy might remain in you, and that your joy might be full." },
+          { reference: "Nehemiah 8:10", text: "The joy of the LORD is your strength." },
+          { reference: "Romans 15:13", text: "Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope." },
+          { reference: "Psalm 16:11", text: "In thy presence is fulness of joy; at thy right hand there are pleasures for evermore." },
+          { reference: "1 Thessalonians 5:16", text: "Rejoice evermore." }
+        ]
+      },
+      Angry: {
+        emoji: "😡",
+        verses: [
+          { reference: "James 1:19", text: "Let every man be swift to hear, slow to speak, slow to wrath." },
+          { reference: "Proverbs 15:1", text: "A soft answer turneth away wrath: but grievous words stir up anger." },
+          { reference: "Ephesians 4:26", text: "Be ye angry, and sin not: let not the sun go down upon your wrath." },
+          { reference: "Proverbs 16:32", text: "He that is slow to anger is better than the mighty; and he that ruleth his spirit than he that taketh a city." },
+          { reference: "Ecclesiastes 7:9", text: "Be not hasty in thy spirit to be angry: for anger resteth in the bosom of fools." },
+          { reference: "Colossians 3:8", text: "But now ye also put off all these; anger, wrath, malice, blasphemy, filthy communication out of your mouth." },
+          { reference: "Proverbs 29:11", text: "A fool uttereth all his mind: but a wise man keepeth it in till afterwards." }
+        ]
+      },
+      Confused: {
+        emoji: "🤔",
+        verses: [
+          { reference: "Proverbs 3:5-6", text: "Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths." },
+          { reference: "1 Corinthians 14:33", text: "For God is not the author of confusion, but of peace." },
+          { reference: "Psalm 32:8", text: "I will instruct thee and teach thee in the way which thou shalt go: I will guide thee with mine eye." },
+          { reference: "James 1:5", text: "If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him." },
+          { reference: "Isaiah 30:21", text: "And thine ears shall hear a word behind thee, saying, This is the way, walk ye in it." },
+          { reference: "John 16:13", text: "Howbeit when he, the Spirit of truth, is come, he will guide you into all truth." },
+          { reference: "Psalm 119:105", text: "Thy word is a lamp unto my feet, and a light unto my path." }
+        ]
+      },
+      Unmotivated: {
+        emoji: "😴",
+        verses: [
+          { reference: "Isaiah 40:31", text: "But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles." },
+          { reference: "Philippians 4:13", text: "I can do all things through Christ which strengtheneth me." },
+          { reference: "2 Thessalonians 3:13", text: "Be not weary in well doing." },
+          { reference: "Galatians 6:9", text: "And let us not be weary in well doing: for in due season we shall reap, if we faint not." },
+          { reference: "Colossians 3:23", text: "And whatsoever ye do, do it heartily, as to the Lord, and not unto men." },
+          { reference: "Hebrews 12:1", text: "Let us run with patience the race that is set before us." },
+          { reference: "Joshua 1:9", text: "Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee." }
+        ]
+      }
+    };
+
+    const moodSelection = document.getElementById('mood-selection');
+    const verseScreen = document.getElementById('verse-screen');
+    const verseText = document.getElementById('verse-text');
+    const verseSource = document.getElementById('verse-source');
+    const bookShell = document.querySelector('.book-shell');
+    const turnPage = document.getElementById('turn-page');
+    const turnVerseText = document.getElementById('turn-verse-text');
+    const turnVerseSource = document.getElementById('turn-verse-source');
+    const favoritesHomeBtn = document.getElementById('favorites-home-btn');
+    const homeUtilityRow = document.getElementById('home-utility-row');
+    const favoriteToggleBtn = document.getElementById('favorite-toggle-btn');
+    const title = document.getElementById('title');
+
+    let selectedMood = null;
+    let verseIndex = 0;
+    let activeVerses = [];
+    let isTurningPage = false;
+
+    function getDayNumber() {
+      const now = new Date();
+      const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return Math.floor(localMidnight.getTime() / 86400000);
+    }
+
+    function hashString(value) {
+      let hash = 0;
+      for (let i = 0; i < value.length; i++) {
+        hash = (hash << 5) - hash + value.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+
+    function createSeededRandom(seed) {
+      return function seededRandom() {
+        seed |= 0;
+        seed = (seed + 0x6D2B79F5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function shuffleWithSeed(items, seed) {
+      const shuffled = [...items];
+      const random = createSeededRandom(seed);
+
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      return shuffled;
+    }
+
+    function getVerseId(verse) {
+      return `${verse.reference}|${verse.text}`;
+    }
+
+    function getSavedFavorites() {
+      try {
+        const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (_err) {
+        return [];
+      }
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+      updateFavoritesHomeButton();
+    }
+
+    function isFavorite(verse) {
+      const favorites = getSavedFavorites();
+      return favorites.some((favorite) => getVerseId(favorite) === getVerseId(verse));
+    }
+
+    function toggleFavoriteCurrentVerse() {
+      const currentVerse = activeVerses[verseIndex];
+      if (!currentVerse) {
+        return;
+      }
+
+      const favorites = getSavedFavorites();
+      const currentId = getVerseId(currentVerse);
+      const existingIndex = favorites.findIndex((favorite) => getVerseId(favorite) === currentId);
+
+      if (existingIndex >= 0) {
+        favorites.splice(existingIndex, 1);
+      } else {
+        favorites.push(currentVerse);
+      }
+
+      saveFavorites(favorites);
+      updateFavoriteToggleButton();
+    }
+
+    function updateFavoriteToggleButton() {
+      const currentVerse = activeVerses[verseIndex];
+      if (!currentVerse) {
+        favoriteToggleBtn.textContent = "⭐ Save";
+        return;
+      }
+
+      favoriteToggleBtn.textContent = isFavorite(currentVerse) ? "★ Saved" : "⭐ Save";
+    }
+
+    function updateFavoritesHomeButton() {
+      const total = getSavedFavorites().length;
+      favoritesHomeBtn.textContent = `⭐ Favorites (${total})`;
+    }
+
+    function getDailyVersesForMood(mood) {
+      const allVerses = moods[mood].verses;
+
+      if (allVerses.length <= DAILY_VERSE_COUNT) {
+        return [...allVerses];
+      }
+
+      const seed = getDayNumber() + hashString(mood);
+      const shuffled = shuffleWithSeed(allVerses, seed);
+      return shuffled.slice(0, DAILY_VERSE_COUNT);
+    }
+
+    function formatVerseForShare(verse) {
+      return `${verse.reference} — ${verse.text}\nSource: ${APP_SOURCE}`;
+    }
+
+    async function shareCurrentVerse() {
+      const currentVerse = activeVerses[verseIndex];
+      if (!currentVerse) {
+        return;
+      }
+
+      const message = formatVerseForShare(currentVerse);
+
+      if (window.Android && typeof window.Android.shareVerse === 'function') {
+        window.Android.shareVerse(message);
+        return;
+      }
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ text: message });
+          return;
+        } catch (_err) {
+        }
+      }
+
+      try {
+        await navigator.clipboard.writeText(message);
+        alert('Verse copied to clipboard.');
+      } catch (_err) {
+        alert(message);
+      }
+    }
+
+    function openFavorites() {
+      selectedMood = 'Favorites';
+      verseIndex = 0;
+      activeVerses = getSavedFavorites();
+
+      moodSelection.style.display = 'none';
+      homeUtilityRow.style.display = 'none';
+      title.textContent = 'Favorite Verses';
+      verseScreen.style.display = 'block';
+
+      if (activeVerses.length === 0) {
+        verseText.textContent = 'No favorites yet. Save verses you love, and they will appear here.';
+        verseSource.textContent = `Source: ${APP_SOURCE}`;
+        favoriteToggleBtn.textContent = '⭐ Save';
+        return;
+      }
+
+      showVerse();
+    }
+
+    // Generate mood buttons
+    for (let mood in moods) {
+      const btn = document.createElement('div');
+      btn.className = 'mood-card';
+      btn.innerHTML = `<span class="emoji">${moods[mood].emoji}</span>${mood}`;
+      btn.onclick = () => selectMood(mood);
+      moodSelection.appendChild(btn);
+    }
+
+    function selectMood(mood) {
+      selectedMood = mood;
+      verseIndex = 0;
+      activeVerses = getDailyVersesForMood(mood);
+      showVerse();
+      moodSelection.style.display = 'none';
+      homeUtilityRow.style.display = 'none';
+      title.textContent = `${mood} - Daily Bible Verses`;
+      verseScreen.style.display = 'block';
+    }
+
+    function showVerse() {
+      const verse = activeVerses[verseIndex];
+      if (!verse) {
+        verseText.textContent = 'No verse available.';
+        verseSource.textContent = `Source: ${APP_SOURCE}`;
+        favoriteToggleBtn.textContent = '⭐ Save';
+        return;
+      }
+
+      verseText.textContent = `${verse.reference} — ${verse.text}`;
+      verseSource.textContent = `Source: ${APP_SOURCE}`;
+      updateFavoriteToggleButton();
+    }
+
+    function animatePageTurn(nextIndex, direction) {
+      if (isTurningPage || nextIndex === verseIndex) {
+        return;
+      }
+
+      const currentVerse = activeVerses[verseIndex];
+      if (!currentVerse) {
+        verseIndex = nextIndex;
+        showVerse();
+        return;
+      }
+
+      isTurningPage = true;
+
+      // Lock height to prevent layout jitter when verse text changes mid-animation
+      bookShell.style.height = bookShell.offsetHeight + 'px';
+
+      turnVerseText.textContent = `${currentVerse.reference} — ${currentVerse.text}`;
+      turnVerseSource.textContent = `Source: ${APP_SOURCE}`;
+
+      turnPage.classList.remove('turn-next', 'turn-prev', 'animate');
+      void turnPage.offsetWidth;
+      turnPage.classList.add(direction === 'prev' ? 'turn-prev' : 'turn-next');
+      turnPage.classList.add('animate');
+
+      setTimeout(() => {
+        verseIndex = nextIndex;
+        showVerse();
+      }, 340);
+
+      setTimeout(() => {
+        turnPage.classList.remove('turn-next', 'turn-prev', 'animate');
+        isTurningPage = false;
+        bookShell.style.height = '';
+      }, 760);
+    }
+
+    function nextVerse() {
+      if (activeVerses.length === 0 || isTurningPage) {
+        return;
+      }
+      const nextIndex = (verseIndex + 1) % activeVerses.length;
+      animatePageTurn(nextIndex, 'next');
+    }
+
+    function prevVerse() {
+      if (activeVerses.length === 0 || isTurningPage) {
+        return;
+      }
+      const nextIndex = (verseIndex - 1 + activeVerses.length) % activeVerses.length;
+      animatePageTurn(nextIndex, 'prev');
+    }
+
+    function goBack() {
+      selectedMood = null;
+      verseIndex = 0;
+      activeVerses = [];
+      isTurningPage = false;
+      turnPage.classList.remove('turn-next', 'turn-prev', 'animate');
+      verseScreen.style.display = 'none';
+      moodSelection.style.display = 'grid';
+      homeUtilityRow.style.display = 'flex';
+      title.textContent = "How are you feeling today?";
+    }
+
+    updateFavoritesHomeButton();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
