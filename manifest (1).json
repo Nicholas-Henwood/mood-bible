@@ -1,0 +1,40 @@
+{
+  "background_color": "#f4efe6",
+  "description": "Find the perfect Bible verse for how you feel today. Daily KJV scripture for every mood — free, offline, no ads.",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Mood Bible – Daily Scripture",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Mood Bible",
+  "start_url": "/",
+  "theme_color": "#2f4f4f",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='12' fill='%234CAF50'/&gt;&lt;text x='32' y='42' font-size='34' text-anchor='middle' fill='white'&gt;✝&lt;/text&gt;&lt;/svg&gt;",
+      "type": "image/svg+xml",
+      "isSquare": false,
+      "isPng": false,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 0,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    },
+    {
+      "src": "https://nicholas-henwood.github.io/mood-bible/icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 192,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": true
+    }
+  ],
+  "id": "/mood-bible/"
+}
