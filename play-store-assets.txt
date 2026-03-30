@@ -1,0 +1,169 @@
+================================================================================
+MOOD BIBLE APP — PLAY STORE LISTING CONTENT
+================================================================================
+
+------------------------------------------------------------------------
+APP TITLE  (max 30 chars)
+------------------------------------------------------------------------
+Mood Bible – Daily Scripture
+
+------------------------------------------------------------------------
+SHORT DESCRIPTION  (max 80 chars — shown under the title in search)
+------------------------------------------------------------------------
+Find the perfect Bible verse for how you feel, every single day.
+
+------------------------------------------------------------------------
+LONG DESCRIPTION  (max 4000 chars)
+------------------------------------------------------------------------
+Mood Bible brings the comfort of Scripture to wherever you are emotionally.
+Simply tap how you are feeling — Sad, Happy, Angry, Confused, or Unmotivated —
+and the app opens a fresh set of King James Version verses handpicked for that
+mood. A new selection is curated every day, so there is always something new
+to reflect on.
+
+KEY FEATURES
+
+• Mood-based verse selection — five emotional categories, each with a
+  carefully chosen collection of KJV scriptures.
+
+• Daily rotation — verses are reshuffled each day using a date-based seed,
+  giving you fresh encouragement every morning without repetition.
+
+• Favourite verses — save any verse with one tap and revisit your personal
+  collection whenever you need it. Favourites are stored privately on your
+  device and never leave it.
+
+• Beautiful book-style reader — an animated page-turn effect makes reading
+  feel like leafing through a real Bible.
+
+• Share instantly — send any verse to a friend via your phone's native share
+  sheet, or copy it to the clipboard in one tap.
+
+• Fully offline — no internet connection required. Open the app anywhere,
+  any time.
+
+• No ads, no accounts, no tracking — completely free with zero data
+  collection. Your device, your data.
+
+• Accessible design — clean typography, generous touch targets, and support
+  for the system's reduced-motion setting.
+
+All Bible text is from the King James Version (KJV), which is in the public
+domain.
+
+Whether you need a word of peace in a difficult moment, a verse of joy to
+celebrate a blessing, or a reminder to stay patient and trust God's plan,
+Mood Bible is your daily pocket companion to Scripture.
+
+------------------------------------------------------------------------
+CATEGORY
+------------------------------------------------------------------------
+Books & Reference   (or: Lifestyle — pick whichever fits your console better)
+
+------------------------------------------------------------------------
+CONTENT RATING QUESTIONNAIRE ANSWERS
+------------------------------------------------------------------------
+Violence:           None
+Sexual content:     None
+Profanity:          None
+Controlled drugs:   None
+User-generated content: No (favourites are local-only, never shared)
+Ads:                No
+→ Expected rating:  Everyone (E) / PEGI 3
+
+------------------------------------------------------------------------
+TAGS / KEYWORDS  (use in the long description naturally — not a separate field)
+------------------------------------------------------------------------
+Bible, KJV, Scripture, Daily Verse, Devotional, Christian, Prayer,
+Mood, Encouragement, Offline Bible
+
+================================================================================
+PLAY CONSOLE — DATA SAFETY SECTION (accurate answers)
+================================================================================
+
+Does your app collect or share any of the required data types?
+→ NO — select "This app does not collect or share any of the required
+        user data types" on all categories.
+
+If the console forces you to answer per-category, use these answers:
+
+  Personal info (name, email, address, etc.)     → Not collected
+  Financial info                                  → Not collected
+  Health & fitness                                → Not collected
+  Messages                                        → Not collected
+  Photos & videos                                 → Not collected
+  Audio files                                     → Not collected
+  Files & docs                                    → Not collected
+  Calendar events                                 → Not collected
+  Contacts                                        → Not collected
+  App activity (interactions, search history)    → Not collected
+  Web browsing                                    → Not collected
+  App info & performance (crash logs, diagnostics)→ Not collected
+  Device or other IDs                             → Not collected
+
+Data security:
+  Is data encrypted in transit?   → N/A (no data leaves device)
+  Can users request data deletion? → Yes — explain: "Clear app data in
+    Android Settings > Apps > Mood Bible > Storage > Clear Data."
+
+================================================================================
+STORE GRAPHICS CHECKLIST
+================================================================================
+
+REQUIRED
+  [ ] Icon — 512 × 512 px PNG, no alpha, no rounded corners
+        (Play Console applies the rounding itself)
+  [ ] Feature Graphic — 1024 × 500 px JPG or PNG, no alpha
+        Suggested content: open Bible on the warm parchment background
+        with the app name in large serif type.
+
+SCREENSHOTS (upload at least 2; 4–8 recommended)
+  Minimum size: 320 px on shortest side, 3840 px on longest side.
+  Aspect ratio: between 16:9 and 9:16.
+
+  Suggested shots to capture:
+    1. Home / mood-selection screen (all 5 mood cards visible)
+    2. Verse reader — a "Sad" verse displayed with the parchment book UI
+    3. Verse reader — a "Happy" verse (shows variety)
+    4. Page-turn animation mid-flight (looks great as a promo shot)
+    5. Favourites screen (a few saved verses listed)
+    6. Small phone (360 × 640 dp) — confirm nothing clips
+    7. Large phone / tablet (412 × 915 dp or 768 × 1024 dp) — confirm
+       layout fills nicely
+
+  Recommended test devices (Android):
+    Small  → Pixel 4a  (5.8", 1080×2340, 443 dpi)  or emulator @ 360×640
+    Medium → Pixel 7   (6.3", 1080×2400, 416 dpi)
+    Large  → Pixel Fold / any 6.7"+ device           or emulator @ 412×915
+    Tablet → Pixel Tablet / Galaxy Tab               or emulator @ 800×1280
+
+================================================================================
+SHORT TESTING CHECKLIST BEFORE FIRST UPLOAD
+================================================================================
+
+Layout / Responsive
+  [ ] Mood cards do not clip or overflow on 360 dp wide screen
+  [ ] Book shell text is legible — no truncation — on longest verse
+  [ ] Navigation buttons remain full-width and tappable on small screens
+  [ ] Favourites button label (with count) fits on one line
+
+Functionality
+  [ ] Selecting each of the 5 moods shows verses
+  [ ] Next / Previous page turn animation plays without jitter
+  [ ] Favouriting and un-favouriting a verse works; count updates
+  [ ] Share opens the native Android share sheet
+  [ ] Back button returns to mood selection and resets state
+  [ ] Favourites screen shows "No favourites yet" when empty
+
+Accessibility
+  [ ] All interactive elements reachable by TalkBack
+  [ ] Text size at 150% accessibility scale — nothing overlaps
+
+Edge Cases
+  [ ] App works fully with Wi-Fi and mobile data both disabled
+  [ ] Rotating to landscape — layout does not break
+  [ ] Clearing app storage resets favourites count to 0
+
+================================================================================
+END OF FILE
+================================================================================

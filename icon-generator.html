@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Generator – Mood Bible App</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --ink: #231f19;
+      --ink-soft: #4f473d;
+      --gold-dark: #7d5f2e;
+      --paper: #fdf8ee;
+      --paper-edge: #e5d9bf;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Palatino Linotype", "Book Antiqua", Garamond, serif;
+      background: linear-gradient(160deg, var(--bg) 0%, #e7dcc8 100%);
+      color: var(--ink);
+      margin: 0;
+      padding: 32px 16px 56px;
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .kicker {
+      margin: 0 0 6px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(24px, 4vw, 32px);
+      color: #2f281e;
+    }
+
+    .intro { color: var(--ink-soft); line-height: 1.7; font-size: 15px; }
+
+    .note {
+      background: #fff9ec;
+      border-left: 4px solid #9d7b41;
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0 28px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.8;
+    }
+
+    .note strong { color: var(--ink); }
+    code { font-family: Consolas, monospace; background: #ede6d8; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+
+    .icon-group {
+      background: var(--paper);
+      border: 1px solid var(--paper-edge);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(35,31,25,0.1);
+    }
+
+    h2 {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 18px;
+      margin: 0 0 6px;
+      color: var(--gold-dark);
+    }
+
+    .sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; }
+
+    canvas {
+      display: block;
+      border: 1px solid var(--paper-edge);
+      border-radius: 10px;
+      margin-bottom: 14px;
+      max-width: 100%;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #2f4f4f;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: #3e6565; }
+
+    .btn-gold {
+      background: #9d7b41;
+      margin-top: 8px;
+    }
+
+    .btn-gold:hover { background: #7d5f2e; }
+
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 32px; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #2f4f4f;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <p class="kicker">Step 1 of the Play Store process</p>
+    <h1>Icon Generator</h1>
+    <p class="intro">
+      This page draws your app icons on a canvas and lets you download them as PNG files.
+      You need exactly three files before you can run the app as a PWA or submit it to the Play Store.
+    </p>
+
+    <div class="note">
+      <strong>Where to save these files:</strong><br>
+      Create a folder called <code>icons</code> next to your HTML files, then save each PNG inside it:<br>
+      <code>icons/icon-192.png</code><br>
+      <code>icons/icon-512.png</code><br>
+      <code>icons/icon-maskable-512.png</code>
+    </div>
+
+    <ol class="steps">
+      <li>Click each Download button below and save the file.</li>
+      <li>Create an <code>icons</code> folder inside your project folder (<code>C:\Youtube\icons\</code>).</li>
+      <li>Move all three downloaded PNG files into that <code>icons</code> folder.</li>
+      <li>Then proceed to the <a href="playstore-setup-guide.html">Play Store Setup Guide</a>.</li>
+    </ol>
+
+    <!-- 192 × 192 -->
+    <div class="icon-group">
+      <h2>192 × 192 &mdash; Standard Icon</h2>
+      <p class="sub">Used as the home-screen icon on most Android devices.</p>
+      <canvas id="c192" width="192" height="192"></canvas>
+      <button class="btn" onclick="dl('c192','icon-192.png')">⬇ Download icon-192.png</button>
+    </div>
+
+    <!-- 512 × 512 -->
+    <div class="icon-group">
+      <h2>512 × 512 &mdash; Standard Icon</h2>
+      <p class="sub">Required by Google Play and used at full resolution on large-screen devices.</p>
+      <canvas id="c512" width="512" height="512"></canvas>
+      <button class="btn" onclick="dl('c512','icon-512.png')">⬇ Download icon-512.png</button>
+    </div>
+
+    <!-- 512 × 512 maskable -->
+    <div class="icon-group">
+      <h2>512 × 512 &mdash; Maskable Icon</h2>
+      <p class="sub">Android's adaptive icon system crops icons into circles, squircles, etc.
+        This version adds safe-zone padding so the cross is never clipped.</p>
+      <canvas id="c512m" width="512" height="512"></canvas>
+      <button class="btn" onclick="dl('c512m','icon-maskable-512.png')">⬇ Download icon-maskable-512.png</button>
+    </div>
+
+    <a href="playstore-setup-guide.html"><button class="btn btn-gold" style="width:100%;padding:14px;">Next: Play Store Setup Guide &rarr;</button></a>
+  </div>
+
+  <script>
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawStandard(canvas) {
+      const s = canvas.width;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, s, s);
+
+      // Green background with rounded corners
+      ctx.fillStyle = '#4CAF50';
+      roundRect(ctx, 0, 0, s, s, s * 0.1875);
+      ctx.fill();
+
+      // Subtle inner highlight
+      const grad = ctx.createLinearGradient(0, 0, 0, s);
+      grad.addColorStop(0, 'rgba(255,255,255,0.18)');
+      grad.addColorStop(1, 'rgba(0,0,0,0.10)');
+      roundRect(ctx, 0, 0, s, s, s * 0.1875);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Cross symbol
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${Math.round(s * 0.52)}px "Times New Roman", Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('\u271D', s / 2, s * 0.525);
+    }
+
+    function drawMaskable(canvas) {
+      const s = canvas.width;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, s, s);
+
+      // Maskable: fill the ENTIRE square — Android masks it into any shape
+      ctx.fillStyle = '#4CAF50';
+      ctx.fillRect(0, 0, s, s);
+
+      // Gradient overlay
+      const grad = ctx.createLinearGradient(0, 0, 0, s);
+      grad.addColorStop(0, 'rgba(255,255,255,0.15)');
+      grad.addColorStop(1, 'rgba(0,0,0,0.08)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, s, s);
+
+      // Cross is placed within the safe zone (inner ~80% of the icon)
+      // Safe zone radius = s * 0.4, so content must be within 10% padding on each side
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${Math.round(s * 0.42)}px "Times New Roman", Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('\u271D', s / 2, s * 0.51);
+    }
+
+    function dl(id, filename) {
+      const canvas = document.getElementById(id);
+      const a = document.createElement('a');
+      a.download = filename;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }
+
+    drawStandard(document.getElementById('c192'));
+    drawStandard(document.getElementById('c512'));
+    drawMaskable(document.getElementById('c512m'));
+  </script>
+</body>
+</html>

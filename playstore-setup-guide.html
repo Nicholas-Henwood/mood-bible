@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play Store Setup Guide – Mood Bible App</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --ink: #231f19;
+      --ink-soft: #4f473d;
+      --gold: #9d7b41;
+      --gold-dark: #7d5f2e;
+      --paper: #fdf8ee;
+      --paper-edge: #e5d9bf;
+      --accent: #2f4f4f;
+      --green: #2e7d32;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Palatino Linotype", "Book Antiqua", Garamond, serif;
+      background: linear-gradient(160deg, var(--bg) 0%, #e7dcc8 100%);
+      color: var(--ink);
+      margin: 0;
+      padding: 32px 16px 64px;
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .kicker {
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+
+    h1 {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(26px, 4vw, 38px);
+      color: #2f281e;
+      margin: 0 0 12px;
+    }
+
+    .intro { color: var(--ink-soft); line-height: 1.7; font-size: 15px; margin-bottom: 32px; }
+
+    /* STEP CARDS */
+    .step {
+      background: var(--paper);
+      border: 1px solid var(--paper-edge);
+      border-radius: 16px;
+      padding: clamp(20px, 3vw, 32px);
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(35,31,25,0.1);
+      position: relative;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: "Times New Roman", Georgia, serif;
+    }
+
+    .step-title {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(17px, 2.4vw, 21px);
+      color: #2f281e;
+      margin: 0;
+    }
+
+    .step-sub {
+      font-size: 13px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    p, li { font-size: 14px; line-height: 1.8; color: var(--ink-soft); margin: 0 0 10px; }
+    ul, ol { padding-left: 20px; margin: 0 0 12px; }
+    li { margin-bottom: 6px; }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      background: #ede6d8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      color: var(--ink);
+    }
+
+    .file-tree {
+      background: #2b2318;
+      color: #e8d8b8;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      border-radius: 10px;
+      padding: 16px 20px;
+      line-height: 1.9;
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+
+    .file-tree .dim { color: #7a6a52; }
+    .file-tree .hi  { color: #7ec87e; }
+
+    .callout {
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .callout.warn {
+      background: #fff8e8;
+      border-left: 4px solid var(--gold);
+      color: var(--ink-soft);
+    }
+
+    .callout.tip {
+      background: #e8f5e9;
+      border-left: 4px solid var(--green);
+      color: #1b4a1e;
+    }
+
+    .callout.danger {
+      background: #fdecea;
+      border-left: 4px solid #c62828;
+      color: #6a1010;
+    }
+
+    .inline-link {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      margin-top: 6px;
+    }
+
+    .btn:hover { background: #3e6565; }
+
+    .btn-gold { background: var(--gold); }
+    .btn-gold:hover { background: var(--gold-dark); }
+
+    .check-list { list-style: none; padding: 0; }
+    .check-list li { padding-left: 28px; position: relative; }
+    .check-list li::before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+      color: var(--gold-dark);
+      font-size: 16px;
+    }
+
+    .done-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    hr { border: none; border-top: 1px solid var(--paper-edge); margin: 32px 0; }
+
+    @media (max-width: 480px) {
+      .step-num { width: 36px; height: 36px; font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <p class="kicker">Full Walkthrough</p>
+    <h1>Play Store Setup Guide</h1>
+    <p class="intro">
+      This guide takes you from a folder of local HTML files to a live Android app on the
+      Google Play Store — using a <strong>TWA (Trusted Web Activity)</strong> via
+      PWABuilder. No Android Studio required. Estimated time: 2–4 hours.
+    </p>
+
+    <!-- PREREQUISITES -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">✓</div>
+        <div>
+          <p class="step-sub">Already done</p>
+          <h2 class="step-title">What's already set up in your project</h2>
+        </div>
+      </div>
+      <ul class="check-list">
+        <li><code>my bible app.html</code> — main app <span class="done-badge">Done</span></li>
+        <li><code>privacy-policy.html</code> — required by Play Store <span class="done-badge">Done</span></li>
+        <li><code>manifest.json</code> — PWA manifest <span class="done-badge">Done</span></li>
+        <li><code>sw.js</code> — service worker for offline support <span class="done-badge">Done</span></li>
+        <li><code>play-store-assets.txt</code> — store listing copy &amp; Data Safety answers <span class="done-badge">Done</span></li>
+      </ul>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div>
+          <p class="step-sub">Local setup</p>
+          <h2 class="step-title">Prepare your files</h2>
+        </div>
+      </div>
+
+      <p><strong>1a. Rename the main HTML file to <code>index.html</code></strong></p>
+      <p>
+        GitHub Pages automatically serves a file called <code>index.html</code> when someone visits
+        the root URL. Rename <code>my bible app.html</code> → <code>index.html</code> now.
+        In Windows Explorer: right-click the file → Rename.
+      </p>
+
+      <p style="margin-top:16px;"><strong>1b. Generate your app icons</strong></p>
+      <p>Open <code>icon-generator.html</code> in your browser, download all three PNGs,
+         then place them in a new folder:</p>
+      <div class="file-tree">
+<span class="hi">C:\Youtube\</span>
+├── index.html
+├── privacy-policy.html
+├── manifest.json
+├── sw.js
+├── icon-generator.html
+├── playstore-setup-guide.html
+├── play-store-assets.txt
+└── <span class="hi">icons\</span>
+    ├── <span class="hi">icon-192.png</span>
+    ├── <span class="hi">icon-512.png</span>
+    └── <span class="hi">icon-maskable-512.png</span>
+      </div>
+
+      <p style="margin-top:16px;"><strong>1c. Update the contact email in <code>privacy-policy.html</code></strong></p>
+      <p>Open <code>privacy-policy.html</code> and replace
+        <code>[your-email@example.com]</code> with your real email address.</p>
+
+      <a href="icon-generator.html" class="btn">Open Icon Generator &rarr;</a>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div>
+          <p class="step-sub">Free hosting</p>
+          <h2 class="step-title">Host on GitHub Pages</h2>
+        </div>
+      </div>
+
+      <p>Your app must be served over <strong>HTTPS</strong> for PWA and TWA to work.
+         GitHub Pages is free and takes about 10 minutes to set up.</p>
+
+      <ol>
+        <li>Create a free account at <a class="inline-link" href="https://github.com" target="_blank">github.com</a> if you don't have one.</li>
+        <li>Click <strong>New repository</strong>. Name it something like <code>mood-bible</code>. Set it to <strong>Public</strong>. Click Create.</li>
+        <li>
+          On the next page, click <strong>"uploading an existing file"</strong>. Drag and drop
+          ALL your project files (including the <code>icons</code> folder). Commit.
+        </li>
+        <li>Go to <strong>Settings → Pages</strong>. Under "Branch", select <code>main</code> and click Save.</li>
+        <li>
+          GitHub will show a URL like:<br>
+          <code>https://YOUR-USERNAME.github.io/mood-bible/</code><br>
+          It takes 1–3 minutes to go live. Keep this URL — you'll need it for PWABuilder.
+        </li>
+      </ol>
+
+      <div class="callout tip">
+        <strong>Tip:</strong> After it goes live, open the URL in Chrome on your phone
+        and check that the app loads and works fully offline (turn on airplane mode after the first load).
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div>
+          <p class="step-sub">Quality check</p>
+          <h2 class="step-title">Verify PWA with Lighthouse</h2>
+        </div>
+      </div>
+
+      <ol>
+        <li>Open your GitHub Pages URL in <strong>Chrome on a desktop computer</strong>.</li>
+        <li>Press <kbd>F12</kbd> to open DevTools → click the <strong>Lighthouse</strong> tab.</li>
+        <li>Select <strong>Progressive Web App</strong> and click <strong>Analyze</strong>.</li>
+        <li>You should see green checkmarks for installability and best practices. Fix any red items before continuing.</li>
+      </ol>
+
+      <div class="callout warn">
+        <strong>PWABuilder requires:</strong> a valid manifest, a registered service worker,
+        HTTPS, and at least one 512×512 icon. If Lighthouse passes, you're good.
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div>
+          <p class="step-sub">Android package</p>
+          <h2 class="step-title">Generate your AAB with PWABuilder</h2>
+        </div>
+      </div>
+
+      <ol>
+        <li>Go to <a class="inline-link" href="https://www.pwabuilder.com" target="_blank">pwabuilder.com</a>.</li>
+        <li>Paste your GitHub Pages URL and click <strong>Start</strong>.</li>
+        <li>PWABuilder analyses your PWA. Once done, click <strong>Package for stores</strong>.</li>
+        <li>Choose <strong>Google Play</strong> → click Next.</li>
+        <li>
+          Fill in the form:
+          <ul>
+            <li>Package ID: <code>com.yourname.moodbible</code> (all lowercase, no spaces)</li>
+            <li>App version: <code>1</code> / Version name: <code>1.0.0</code></li>
+            <li>App name: <code>Mood Bible</code></li>
+          </ul>
+        </li>
+        <li>Click <strong>Generate</strong>. Download the ZIP file.</li>
+        <li>
+          Inside the ZIP you'll find:
+          <ul>
+            <li>An <strong>.aab</strong> file — this is the app bundle you upload to Play Console.</li>
+            <li>A <strong>signing key</strong> (.keystore or .jks) — <span style="color:#c62828;font-weight:700;">back this up safely, you'll need it forever.</span></li>
+            <li>An <strong>assetlinks.json</strong> file — needed in Step 5.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="callout danger">
+        <strong>Critical:</strong> Never lose your signing keystore file. If you lose it, you
+        can never update your app on the Play Store and you'd have to publish under a new package ID.
+        Back it up to Google Drive, a USB drive, and/or your email.
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">5</div>
+        <div>
+          <p class="step-sub">Domain verification</p>
+          <h2 class="step-title">Add assetlinks.json to GitHub</h2>
+        </div>
+      </div>
+
+      <p>
+        The TWA needs to verify that your Android app is allowed to open your website without
+        browser chrome. This is done via a special file on your server.
+      </p>
+
+      <ol>
+        <li>Find the <code>assetlinks.json</code> file inside the PWABuilder ZIP you downloaded.</li>
+        <li>
+          In your GitHub repo, create a folder called <code>.well-known</code>
+          (the dot at the start is intentional).
+        </li>
+        <li>Upload <code>assetlinks.json</code> into that folder.</li>
+        <li>
+          Verify it's live by visiting:<br>
+          <code>https://YOUR-USERNAME.github.io/mood-bible/.well-known/assetlinks.json</code><br>
+          You should see JSON content in the browser.
+        </li>
+      </ol>
+
+      <div class="callout warn">
+        <strong>GitHub Pages note:</strong> By default, GitHub Pages ignores folders starting
+        with a dot. To fix this, add a file called <code>.nojekyll</code> (empty file, no extension)
+        to the root of your repo. This tells GitHub Pages to serve all files as-is.
+      </div>
+
+      <div class="callout tip">
+        After adding <code>.nojekyll</code>, wait 2–3 minutes for GitHub to rebuild, then
+        re-check the <code>assetlinks.json</code> URL.
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">6</div>
+        <div>
+          <p class="step-sub">One-time $25 fee</p>
+          <h2 class="step-title">Set up Google Play Console</h2>
+        </div>
+      </div>
+
+      <ol>
+        <li>Go to <a class="inline-link" href="https://play.google.com/console" target="_blank">play.google.com/console</a> and sign in with a Google account.</li>
+        <li>Pay the one-time <strong>$25 USD developer registration fee</strong>.</li>
+        <li>Once approved (usually instant), click <strong>Create app</strong>.</li>
+        <li>
+          Fill in app details — use <strong>play-store-assets.txt</strong> for all text:
+          <ul>
+            <li>App name → use the title from the txt file</li>
+            <li>Default language → English (United States)</li>
+            <li>App or Game → App</li>
+            <li>Free or Paid → Free</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">7</div>
+        <div>
+          <p class="step-sub">Store listing</p>
+          <h2 class="step-title">Fill in Play Console — Store Listing</h2>
+        </div>
+      </div>
+
+      <p>
+        In Play Console, go to <strong>Store presence → Main store listing</strong>.
+        Use <code>play-store-assets.txt</code> as your reference for all text fields.
+      </p>
+
+      <ul class="check-list">
+        <li>Short description (80 chars)</li>
+        <li>Full description (4000 chars max)</li>
+        <li>App icon — upload <code>icons/icon-512.png</code></li>
+        <li>Feature graphic (1024×500 px) — create this in Canva or similar; use the parchment colours</li>
+        <li>Screenshots — at least 2 phone screenshots</li>
+        <li>Privacy Policy URL — your GitHub Pages URL + <code>/privacy-policy.html</code><br>
+            <span style="font-size:12px;color:var(--gold-dark);">e.g. https://username.github.io/mood-bible/privacy-policy.html</span></li>
+        <li>Category: Books &amp; Reference</li>
+        <li>Email address for users to contact you</li>
+      </ul>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">8</div>
+        <div>
+          <p class="step-sub">Content &amp; privacy</p>
+          <h2 class="step-title">Complete Data Safety &amp; Content Rating</h2>
+        </div>
+      </div>
+
+      <p><strong>Data Safety</strong> (in Play Console → Store presence → Data safety):</p>
+      <p>
+        Select <em>"This app does not collect or share any required user data types"</em>
+        across all categories. The detailed answers are in <code>play-store-assets.txt</code>.
+      </p>
+
+      <p style="margin-top:16px;"><strong>Content Rating</strong>:</p>
+      <p>
+        Complete the IARC questionnaire. The app has no violence, no adult content, no gambling.
+        Expected rating: <strong>Everyone (E) / PEGI 3</strong>.
+      </p>
+    </div>
+
+    <!-- STEP 9 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">9</div>
+        <div>
+          <p class="step-sub">Upload &amp; release</p>
+          <h2 class="step-title">Upload your AAB and submit</h2>
+        </div>
+      </div>
+
+      <ol>
+        <li>In Play Console go to <strong>Release → Production → Create new release</strong>.</li>
+        <li>Upload the <strong>.aab</strong> file from the PWABuilder ZIP.</li>
+        <li>Add release notes (e.g. "Initial release").</li>
+        <li>Click <strong>Save → Review release → Start rollout to Production</strong>.</li>
+        <li>
+          Google will review the app. <strong>First submissions typically take 3–7 days</strong>.
+          You'll receive an email when approved or if changes are needed.
+        </li>
+      </ol>
+
+      <div class="callout tip">
+        <strong>After approval:</strong> your app will be live at<br>
+        <code>https://play.google.com/store/apps/details?id=com.yourname.moodbible</code>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="callout tip">
+      <strong>Future updates:</strong> When you update the app content (add verses, fix bugs), just
+      push the changes to GitHub. The TWA loads the latest version from your website automatically —
+      no need to re-upload to Play Store unless you change the Android shell itself.
+    </div>
+
+    <div style="text-align:center; margin-top:32px;">
+      <a href="index.html" class="btn">&larr; Back to App</a>
+      &nbsp;
+      <a href="icon-generator.html" class="btn btn-gold">Icon Generator</a>
+    </div>
+  </div>
+</body>
+</html>
